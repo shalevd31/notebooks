@@ -1,0 +1,9 @@
+{
+  "appId": "com.shalevd31.notebooks",
+  "appName": "המחברות שלי",
+  "webDir": "docs",
+  "backgroundColor": "#e6ebf1",
+  "ios": {
+    "contentInset": "never"
+  }
+}

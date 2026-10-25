@@ -1,3 +1,5 @@
 node_modules/
 dist/
 qr.png
+ios/
+ios-build/
