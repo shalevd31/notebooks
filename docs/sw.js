@@ -1,5 +1,5 @@
 // Offline cache for the phone app. When you change anything in docs/, bump CACHE_VERSION.
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = 'v2';
 const CACHE = 'notebooks-' + CACHE_VERSION;
 const FILES = [
   './',

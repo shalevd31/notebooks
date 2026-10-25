@@ -102,6 +102,10 @@ button{font:inherit;color:inherit}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;min-height:100vh;-webkit-tap-highlight-color:transparent}
 .back[hidden]{display:none}
+
+/* squared paper (math / electricity): grid instead of lines, cover and pages alike */
+.cover.grid{background-image:repeating-linear-gradient(to bottom, transparent 0 17px, #d6dde8 17px 18px),repeating-linear-gradient(to left, transparent 0 17px, #d6dde8 17px 18px)}
+.pages.grid .paper{background-image:linear-gradient(to left, transparent var(--m), var(--margin) var(--m), var(--margin) calc(var(--m) + 2px), transparent calc(var(--m) + 2px)),repeating-linear-gradient(to bottom, transparent 0 15px, var(--rule) 15px 16px),repeating-linear-gradient(to left, transparent 0 15px, var(--rule) 15px 16px)}
 .wrap{padding-top:max(28px, calc(env(safe-area-inset-top, 0px) + 12px));padding-bottom:max(64px, calc(env(safe-area-inset-bottom, 0px) + 24px))}
 </style>
 </head>
@@ -231,11 +235,11 @@ document.documentElement.setAttribute("dir","rtl");document.documentElement.setA
 const NOTEBOOKS = [
   { id:'energy', title:'המרת אנרגיה', owner:'דריה', fill:'#f7a8c4', ring:'#d94f84', art:'energy',
     topics:[ { id:'transformer', title:'שנאי', pages:'1–2' } ] },
-  { id:'math', title:'מתמטיקה', owner:'דריה', fill:'#8fd8ec', ring:'#1a9fb0', art:'math', topics:[] },
+  { id:'math', title:'מתמטיקה', owner:'דריה', fill:'#8fd8ec', ring:'#1a9fb0', art:'math', paper:'grid', topics:[] },
   { id:'english', title:'אנגלית', owner:'דריה', fill:'#cbb7f4', ring:'#7a52cc', art:'english', topics:[] },
   { id:'civics', title:'אזרחות', owner:'דריה', fill:'#ffd28f', ring:'#e07a26', art:'civics', topics:[] },
   { id:'techenglish', title:'אנגלית טכנית', owner:'דריה', fill:'#a2e3cb', ring:'#178f6c', art:'tech', topics:[] },
-  { id:'electricity', title:'חשמל', owner:'דריה', fill:'#ffe66d', ring:'#e09a00', art:'elec', topics:[] }
+  { id:'electricity', title:'חשמל', owner:'דריה', fill:'#ffe66d', ring:'#e09a00', art:'elec', paper:'grid', topics:[] }
 ];
 
 /* ===== cover doodles (each notebook: a top strip and a bottom strip, 300×110) ===== */
@@ -346,7 +350,7 @@ function showShelf(){
   NOTEBOOKS.forEach(nb => {
     const art = ART[nb.art](nb.ring);
     const n = nb.topics.length;
-    const b = el('button', {class:'cover', type:'button', style:`--fill:${nb.fill};--ring:${nb.ring}`, 'aria-label':'פתיחת המחברת ' + nb.title, onclick:() => showNotebook(nb)},
+    const b = el('button', {class:'cover' + (nb.paper === 'grid' ? ' grid' : ''), type:'button', style:`--fill:${nb.fill};--ring:${nb.ring}`, 'aria-label':'פתיחת המחברת ' + nb.title, onclick:() => showNotebook(nb)},
       svgFrom(art.top),
       (() => { const s = bubbleSvg(nb.title, nb.fill, nb.ring, {fixedW:300}); s.classList.add('tt'); return s; })(),
       svgFrom(art.bot),
@@ -368,7 +372,7 @@ function showNotebook(nb){
     el('div', {class:'ttl'}, bubbleSvg('תוכן עניינים', nb.fill, nb.ring, {oneLine:true, fs:60})),
     el('p', {}, 'מחברת: ', el('span', {class:'y'}, nb.title)),
     el('p', {}, ' '), nb.topics.length ? list : el('p', {}, 'עדיין אין נושאים במחברת הזאת – הם יופיעו כאן.'));
-  view.replaceChildren(el('div', {class:'pages', style:`--hl-tan:${nb.fill}`}, paper));
+  view.replaceChildren(el('div', {class:'pages' + (nb.paper === 'grid' ? ' grid' : ''), style:`--hl-tan:${nb.fill}`}, paper));
   window.scrollTo(0,0);
 }
 
@@ -377,7 +381,7 @@ function showTopic(nb, t){
   hSub.textContent = 'המחברות שלי › ' + nb.title + ' › ' + t.title;
   setBack('לתוכן העניינים', () => showNotebook(nb)); setHash(t.id);
   const tpl = document.getElementById('t-' + t.id);
-  const wrap = el('div', {class:'pages'});
+  const wrap = el('div', {class:'pages' + (nb.paper === 'grid' ? ' grid' : '')});
   if (tpl) wrap.append(tpl.content.cloneNode(true));
   view.replaceChildren(wrap);
   window.scrollTo(0,0);
