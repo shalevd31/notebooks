@@ -1,0 +1,47 @@
+{
+  "name": "notebooks",
+  "version": "1.0.0",
+  "description": "המחברות שלי – סיכומים",
+  "author": "shalevd31",
+  "main": "desktop/main.js",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "fonts": "node scripts/fetch-fonts.mjs",
+    "icons": "node scripts/make-icons.mjs",
+    "dist": "electron-builder --win nsis"
+  },
+  "build": {
+    "appId": "com.shalevd31.notebooks",
+    "productName": "Notebooks",
+    "files": [
+      "desktop/**",
+      "docs/**",
+      "package.json"
+    ],
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "win": {
+      "icon": "build/icon.png",
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "המחברות שלי",
+      "uninstallDisplayName": "המחברות שלי",
+      "artifactName": "Notebooks-Setup-${version}.exe"
+    }
+  },
+  "devDependencies": {
+    "electron": "^45.0.0",
+    "electron-builder": "^26.18.0",
+    "qrcode": "^1.5.4",
+    "sharp": "^0.35.5"
+  }
+}
