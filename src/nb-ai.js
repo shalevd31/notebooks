@@ -13,19 +13,27 @@ const SETTINGS_KEY = 'nb-settings';
 function readLocal(k, fallback) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : fallback; } catch { return fallback; } }
 function writeLocal(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
 
+// pasted text from chat apps can carry line breaks and invisible direction marks (RTL text especially)
+const clean = s => String(s || '').replace(/[\s​-‏‪-‮⁦-⁩﻿­]/g, '');
+
 export const settings = {
   get() {
     const local = readLocal(SETTINGS_KEY, {});
     const desk = (typeof window !== 'undefined' && window.nbConfig) || {};
-    return { anthropicKey: local.anthropicKey || desk.anthropicKey || '', githubToken: local.githubToken || desk.githubToken || '' };
+    return { anthropicKey: clean(local.anthropicKey || desk.anthropicKey), githubToken: clean(local.githubToken || desk.githubToken) };
   },
-  set(patch) { writeLocal(SETTINGS_KEY, { ...readLocal(SETTINGS_KEY, {}), ...patch }); },
+  set(patch) {
+    const p = {};
+    for (const k in patch) p[k] = clean(patch[k]);
+    writeLocal(SETTINGS_KEY, { ...readLocal(SETTINGS_KEY, {}), ...p });
+  },
   // one string holding both keys, so the phone needs a single paste
   toSetupCode(s = this.get()) { return 'NB1:' + b64encode(JSON.stringify({ a: s.anthropicKey, g: s.githubToken })); },
   fromSetupCode(code) {
-    const m = String(code).trim().match(/^NB1:(.+)$/);
-    if (!m) throw new Error('קוד ההגדרה לא תקין');
-    const o = JSON.parse(b64decode(m[1]));
+    const m = clean(code).match(/NB1:([A-Za-z0-9+/]+=*)/i);
+    let o = null;
+    try { o = m && JSON.parse(b64decode(m[1])); } catch {}
+    if (!o || !(o.a || o.g)) throw new Error('קוד ההגדרה לא תקין. העתיקו את כל השורה, מ-NB1: ועד הסוף.');
     this.set({ anthropicKey: o.a || '', githubToken: o.g || '' });
   }
 };
