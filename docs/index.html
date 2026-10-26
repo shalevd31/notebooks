@@ -149,6 +149,85 @@ body{margin:0;min-height:100vh;-webkit-tap-highlight-color:transparent}
 .sbody small{color:var(--muted);font-weight:400}
 .sbody .row{display:flex;gap:10px;flex-wrap:wrap}
 .sbody .status{min-height:1.5em}
+.sbody input.rtl{direction:rtl;text-align:right}
+
+/* big buttons under the shelf / contents page */
+.bar{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;width:100%}
+.bigbtn{display:inline-flex;align-items:center;gap:8px;font-size:18px;font-weight:700;padding:14px 26px;min-height:52px;border-radius:999px;cursor:pointer;background:var(--pen-pink);color:#fff;border:none;box-shadow:0 6px 16px rgba(224,98,143,.35)}
+.bigbtn:hover{filter:brightness(1.05)}
+.bigbtn.quiet{background:var(--desk-2);color:var(--fg);border:1px solid var(--line);box-shadow:none;font-weight:500;font-size:16px}
+.shelf.one{grid-template-columns:minmax(0, 260px);justify-content:center}
+
+/* exam: setup steps */
+.ebody{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.qhead{margin:0;font-size:22px}
+.choice{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;gap:4px;padding:16px 18px;border-radius:14px;border:1px solid var(--line);background:var(--desk-2)}
+.choice b{font-size:20px}
+.choice span{color:var(--muted)}
+.choice:hover,.choice:focus-visible{border-color:var(--pen-pink);outline:none}
+.ptable table{min-width:0;color:var(--fg)}
+.ptable th,.ptable td{border-color:var(--line);line-height:1.6;padding:6px 10px}
+.ptable th{background:var(--desk-2)}
+.ptable input{width:20px;height:20px}
+.sbody .range label{flex:1 1 90px}
+.sbody .range input{direction:ltr;text-align:center}
+
+/* exam paper: looks like a printed school exam */
+.examwrap{display:flex;flex-direction:column;align-items:center;gap:18px;padding:20px max(12px, env(safe-area-inset-right, 0px)) 40px max(12px, env(safe-area-inset-left, 0px))}
+.exam-paper{box-sizing:border-box;width:100%;max-width:794px;background:#fff;color:#111;font-family:'Rubik', Arial, sans-serif;font-size:17px;line-height:1.6;padding:28px clamp(16px, 5vw, 56px) 40px;border-radius:3px;box-shadow:0 1px 2px rgba(0,0,0,.1),0 12px 28px rgba(20,30,50,.18)}
+.exam-paper .ehead{display:flex;justify-content:space-between;gap:16px;font-weight:700;margin-bottom:22px}
+.exam-paper .blank{display:inline-block;min-width:110px;border-bottom:2px solid #111;text-align:center;vertical-align:bottom;min-height:1.4em}
+.exam-paper h1{font-size:22px;text-align:center;text-decoration:underline;text-underline-offset:6px;margin:0 0 12px;text-wrap:balance}
+.exam-paper .intro{font-weight:700;margin:0 0 18px}
+.exam-paper h2{font-size:18px;margin:26px 0 4px}
+.exam-paper .instr{font-weight:700;margin:0 0 14px}
+.exam-paper .q{margin:0 0 22px;padding:4px 0}
+.exam-paper .qt{margin:0 0 8px;font-weight:700}
+.exam-paper .mark{margin-inline-start:10px}
+.opts{display:flex;flex-direction:column;gap:4px;padding-inline-start:22px}
+.opt{all:unset;box-sizing:border-box;cursor:pointer;display:flex;gap:10px;align-items:center;padding:4px 6px;border-radius:8px;min-height:40px}
+.opt:hover{background:#f3f5f8}
+.opt .let{flex:none;display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;border:2px solid transparent;font-weight:700}
+.opt .let::after{content:"."}
+.opt.on .let{border-color:#1f4fbf;color:#1f4fbf}
+.opt.right{background:#e3f6e1}
+.opt:focus-visible{outline:3px solid var(--focus)}
+.exam-paper textarea.ans{box-sizing:border-box;width:100%;font:inherit;font-size:16px;color:#1f3b8c;line-height:32px;padding:0 8px;border:none;border-radius:0;resize:vertical;min-height:130px;background:repeating-linear-gradient(to bottom, transparent 0 31px, #222 31px 32px);outline:none}
+.exam-paper textarea.ans:focus{background-color:#fbfcff}
+.syms{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.syms[hidden]{display:none}
+.syms button{min-width:40px;min-height:40px;border-radius:8px;border:1px solid #c9d1dc;background:#f6f8fb;color:#111;font-size:17px;cursor:pointer}
+.tools{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.tools button,.tools label{display:inline-flex;align-items:center;gap:4px;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid #c9d1dc;background:#f6f8fb;color:#111;font-size:15px;cursor:pointer}
+.thumbs{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.thumb{position:relative}
+.thumb img{display:block;width:120px;height:90px;object-fit:cover;border-radius:6px;border:1px solid #c9d1dc}
+.thumb button{position:absolute;top:-8px;left:-8px;width:26px;height:26px;border-radius:50%;border:none;background:#d23a3a;color:#fff;cursor:pointer}
+.exam-paper .good{text-align:center;font-weight:700;font-size:20px;margin-top:30px}
+.btn.big{font-size:18px;padding:14px 30px}
+/* graded: red teacher's pen */
+.pen{font-family:var(--f-hand);color:#d23a3a;font-weight:600}
+.pen.big{font-size:30px;line-height:1}
+.exam-paper .fb{margin:8px 0 0;font-size:15px}
+.exam-paper .model summary{cursor:pointer;color:#555;font-size:15px;margin-top:6px}
+.exam-paper .model p{margin:4px 0 0;font-size:15px;color:#333;background:#f6f8fb;border-radius:8px;padding:8px 12px;white-space:pre-wrap}
+.q.done.correct .qt b{color:#2f8a3a}
+.q.done.wrong .qt b{color:#d23a3a}
+.q.done.wrong .opt.on .let{border-color:#d23a3a;color:#d23a3a}
+.summary{width:100%;max-width:794px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.summary .grade{font-family:var(--f-hand);font-size:56px;font-weight:600;color:#d23a3a;width:110px;height:110px;border:4px solid #d23a3a;border-radius:50%;display:flex;align-items:center;justify-content:center;transform:rotate(-6deg)}
+.summary p{margin:0}
+
+/* drawing pad */
+.draw{background:#fff;color:#111}
+.dtools{display:flex;flex-wrap:wrap;gap:8px;padding:10px 12px;border-bottom:1px solid #dde3ea}
+.dtools button{display:inline-flex;align-items:center;gap:6px;min-width:44px;min-height:44px;padding:0 12px;border-radius:999px;border:1px solid #c9d1dc;background:#f6f8fb;color:#111;cursor:pointer;font-size:15px}
+.dtools button.on{border:2px solid #e0628f}
+.dtools i{display:block;width:20px;height:20px;border-radius:50%}
+#drawCanvas{flex:1;width:100%;min-height:0;touch-action:none;background-color:#fff;background-image:linear-gradient(#dde5ef 1px, transparent 1px),linear-gradient(90deg, #dde5ef 1px, transparent 1px);background-size:20px 20px;cursor:crosshair}
+.dfoot{padding:10px 12px;border-top:1px solid #dde3ea;display:flex;gap:10px}
+.dfoot .btn{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:999px;border:1px solid #c9d1dc;background:#f6f8fb;color:#111;cursor:pointer}
+.dfoot .btn.primary{background:var(--pen-pink);border-color:var(--pen-pink);color:#fff}
 </style>
 </head>
 <body>
@@ -191,6 +270,38 @@ body{margin:0;min-height:100vh;-webkit-tap-highlight-color:transparent}
     <div class="row"><button class="btn primary" type="button" id="setSave">שמירה</button><button class="btn" type="button" id="setCopy">העתקת קוד הגדרה למכשיר אחר</button></div>
     <p class="status" id="setStatus"></p>
   </div>
+</section>
+
+<!-- new notebook: Claude designs the cover from the subject -->
+<section class="sheet" id="nbSheet" dir="rtl" lang="he" hidden role="dialog" aria-modal="true" aria-labelledby="nbTitle">
+  <div class="shead"><b id="nbTitle">מחברת חדשה</b><button type="button" id="nbClose" aria-label="סגירה">✕</button></div>
+  <div class="sbody">
+    <label>מה יהיה המקצוע של המחברת? <input id="nbSubject" class="rtl" type="text" autocomplete="off" placeholder="למשל: היסטוריה"></label>
+    <div class="row"><button class="btn primary" type="button" id="nbMake">✨ עיצוב המחברת</button></div>
+    <p class="status" id="nbStatus"></p>
+    <div id="nbPreview"></div>
+    <div class="row" id="nbActions" hidden><button class="btn primary" type="button" id="nbSave">➕ הוספה למדף</button><button class="btn" type="button" id="nbAgain">🎨 עיצוב אחר</button></div>
+  </div>
+</section>
+
+<!-- exam: choose type and pages, answer, get graded -->
+<section class="sheet" id="exam" dir="rtl" lang="he" hidden role="dialog" aria-modal="true" aria-labelledby="examTitle">
+  <div class="shead"><b id="examTitle">מבחן</b><button type="button" id="examClose" aria-label="סגירה">✕</button></div>
+  <div class="ebody" id="examBody"></div>
+</section>
+
+<!-- drawing pad for exam answers -->
+<section class="sheet draw" id="draw" dir="rtl" lang="he" hidden role="dialog" aria-modal="true" aria-label="ציור תשובה">
+  <div class="dtools">
+    <button type="button" class="on" data-pen="#1f2633" aria-label="עט שחור"><i style="background:#1f2633"></i></button>
+    <button type="button" data-pen="#2f6fd6" aria-label="עט כחול"><i style="background:#2f6fd6"></i></button>
+    <button type="button" data-pen="#d23a3a" aria-label="עט אדום"><i style="background:#d23a3a"></i></button>
+    <button type="button" data-pen="erase">🧽 מחק</button>
+    <button type="button" id="drawUndo">↶ ביטול</button>
+    <button type="button" id="drawClear">🗑 ניקוי</button>
+  </div>
+  <canvas id="drawCanvas"></canvas>
+  <div class="row dfoot"><button class="btn primary" type="button" id="drawSave">✓ צירוף לתשובה</button><button class="btn" type="button" id="drawCancel">ביטול</button></div>
 </section>
 
 <!-- ============ Topic: שנאי (מחברת המרת אנרגיה) ============ -->
@@ -420,25 +531,21 @@ function showShelf(){
   setBack(null, null); setHash('');
   rerender = showShelf;
   const shelf = el('div', {class:'shelf'});
-  NOTEBOOKS.forEach(nb => {
-    const art = ART[nb.art](nb.ring);
-    const n = topicsOf(nb).length;
-    const b = el('button', {class:'cover' + (nb.paper === 'grid' ? ' grid' : ''), type:'button', style:`--fill:${nb.fill};--ring:${nb.ring}`, 'aria-label':'פתיחת המחברת ' + nb.title, onclick:() => showNotebook(nb)},
-      svgFrom(art.top),
-      (() => { const s = bubbleSvg(nb.title, nb.fill, nb.ring, {fixedW:300}); s.classList.add('tt'); return s; })(),
-      svgFrom(art.bot),
-      el('span', {class:'cfoot'}, el('span', {class:'cnt'}, n === 0 ? 'ריקה' : n === 1 ? 'נושא 1' : n + ' נושאים')));
-    shelf.append(b);
-  });
-  view.replaceChildren(shelf);
+  allNotebooks().forEach(nb => shelf.append(coverEl(nb, () => showNotebook(nb))));
+  view.replaceChildren(shelf, el('div', {class:'bar'}, el('button', {class:'bigbtn', type:'button', onclick:openNewNotebook}, '＋ הוספת מחברת')));
   window.scrollTo(0,0);
 }
 
-/* ===== topics added from the app: saved in docs/topics.json on GitHub, cached on the device ===== */
+/* ===== notebooks and topics added from the app: saved in docs/topics.json on GitHub, cached on the device ===== */
 const AI = window.NBAI || null;
-let CUSTOM = AI ? AI.topics.cached() : [];
+let DATA = AI ? AI.store.cached() : {topics:[], notebooks:[]};
 let rerender = () => showShelf();
-function topicsOf(nb){ return nb.topics.concat(CUSTOM.filter(t => t.notebook === nb.id)); }
+function allNotebooks(){ return NOTEBOOKS.concat(DATA.notebooks.map(n => ({...n, topics:[], custom:true}))); }
+function artFor(nb){
+  if (!nb.custom) return ART[nb.art](nb.ring);
+  return { top: AI.sanitizeSvg(nb.top) + bTop(nb.ring), bot: AI.sanitizeSvg(nb.bot) + bBot(nb.ring) };
+}
+function topicsOf(nb){ return nb.topics.concat(DATA.topics.filter(t => t.notebook === nb.id)); }
 function pageCount(t){
   if (t.html) return t.pageCount || 1;
   const tpl = document.getElementById('t-' + t.id);
@@ -464,8 +571,17 @@ function showNotebook(nb){
     el('p', {}, ' '), all.length ? list : el('p', {}, 'עדיין אין נושאים במחברת הזאת – הם יופיעו כאן.'),
     el('p', {}, ' '),
     el('button', {class:'addtopic', type:'button', onclick:() => openChat(nb)}, '＋ ', el('span', {}, 'נושא חדש עם Claude')));
-  view.replaceChildren(el('div', {class:'pages' + (nb.paper === 'grid' ? ' grid' : ''), style:`--hl-tan:${nb.fill}`}, paper));
+  const bar = el('div', {class:'bar'}, el('button', {class:'bigbtn', type:'button', onclick:() => openExam(nb)}, '📝 התחלת מבחן'));
+  if (nb.custom) bar.append(el('button', {class:'bigbtn quiet', type:'button', onclick:() => deleteNotebook(nb)}, '🗑 מחיקת המחברת'));
+  view.replaceChildren(el('div', {class:'pages' + (nb.paper === 'grid' ? ' grid' : ''), style:`--hl-tan:${nb.fill}`}, paper, bar));
   window.scrollTo(0,0);
+}
+
+async function deleteNotebook(nb){
+  const n = topicsOf(nb).length;
+  if (!confirm('למחוק את המחברת "' + nb.title + '"' + (n ? ' ואת ' + n + ' הנושאים שבה' : '') + '?')) return;
+  try { DATA = await AI.store.removeNotebook(nb.id); showShelf(); }
+  catch (e) { alert(e.message); }
 }
 
 function topicPages(nb, t){
@@ -498,7 +614,7 @@ function showTopic(nb, t){
 
 async function deleteTopic(nb, t){
   if (!confirm('למחוק את הנושא "' + t.title + '"?')) return;
-  try { CUSTOM = await AI.topics.remove(t.id); showNotebook(nb); }
+  try { DATA = await AI.store.removeTopic(t.id); showNotebook(nb); }
   catch (e) { alert(e.message); }
 }
 
@@ -575,9 +691,9 @@ function showProposal(title, html){
     const topic = { id: chatTopic ? chatTopic.id : 'u' + Date.now().toString(36), notebook: chatNb.id, title, html,
       pageCount: Math.max(1, pages.querySelectorAll('article.paper').length), created: chatTopic ? chatTopic.created : new Date().toISOString(), updated: new Date().toISOString() };
     try {
-      CUSTOM = await AI.topics.save(topic);
+      DATA = await AI.store.saveTopic(topic);
       chat.hidden = true; session = null;
-      showTopic(chatNb, CUSTOM.find(t => t.id === topic.id) || topic);
+      showTopic(chatNb, DATA.topics.find(t => t.id === topic.id) || topic);
     } catch (err) {
       add.disabled = false; add.textContent = chatTopic ? '💾 שמירת השינויים' : '➕ הוספה למחברת';
       logMsg('err', err.message);
@@ -611,19 +727,325 @@ document.getElementById('setCopy').addEventListener('click', async () => {
   catch { document.execCommand('copy'); setStatus.textContent = 'סמנו והעתיקו את הקוד מהשדה למעלה.'; }
 });
 
-/* pull topics added on other devices; redraw only if something changed */
+/* ===== new notebook: Claude designs the cover from the subject ===== */
+const nbSheet = document.getElementById('nbSheet'), nbSubject = document.getElementById('nbSubject'), nbStatus = document.getElementById('nbStatus');
+const nbPreview = document.getElementById('nbPreview'), nbActions = document.getElementById('nbActions'), nbMake = document.getElementById('nbMake');
+let nbDraft = null;
+const isHex = c => /^#[0-9a-f]{6}$/i.test(c || '');
+
+function coverEl(nb, onclick){
+  const art = artFor(nb), n = topicsOf(nb).length;
+  return el('button', {class:'cover' + (nb.paper === 'grid' ? ' grid' : ''), type:'button', style:`--fill:${nb.fill};--ring:${nb.ring}`, 'aria-label':'פתיחת המחברת ' + nb.title, onclick},
+    svgFrom(art.top),
+    (() => { const s = bubbleSvg(nb.title, nb.fill, nb.ring, {fixedW:300}); s.classList.add('tt'); return s; })(),
+    svgFrom(art.bot),
+    el('span', {class:'cfoot'}, el('span', {class:'cnt'}, n === 0 ? 'ריקה' : n === 1 ? 'נושא 1' : n + ' נושאים')));
+}
+
+function openNewNotebook(){
+  if (!AI) return alert('לא נטען. בדקו חיבור לאינטרנט.');
+  nbDraft = null; nbSubject.value = ''; nbStatus.textContent = ''; nbPreview.replaceChildren(); nbActions.hidden = true; nbMake.disabled = false;
+  nbSheet.hidden = false; nbSubject.focus();
+}
+document.getElementById('nbClose').addEventListener('click', () => { nbSheet.hidden = true; });
+nbSubject.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); nbMake.click(); } });
+
+async function designCover(){
+  const subject = nbSubject.value.trim();
+  if (!subject) { nbStatus.textContent = 'כתבו קודם את המקצוע.'; return; }
+  nbMake.disabled = true; nbActions.hidden = true; nbPreview.replaceChildren();
+  nbStatus.textContent = '🎨 Claude מעצב את המחברת…';
+  const examples = [['אזרחות', 'civics', '#e07a26'], ['מתמטיקה', 'math', '#1a9fb0']]
+    .map(([t, k, c]) => { const a = ART[k](c); return `Subject: ${t}\nTOP STRIP:\n${a.top}\nBOTTOM STRIP:\n${a.bot}`; }).join('\n\n');
+  try {
+    const d = await AI.designNotebook(subject, examples, n => { nbStatus.textContent = '🎨 Claude מעצב את המחברת… (' + n.toLocaleString('he-IL') + ' תווים)'; });
+    nbDraft = { id: 'n' + Date.now().toString(36), title: (d.title || subject).trim(), fill: isHex(d.fill) ? d.fill : '#f7a8c4', ring: isHex(d.ring) ? d.ring : '#d94f84',
+      paper: d.paper === 'grid' ? 'grid' : 'lines', top: d.top_svg, bot: d.bottom_svg, created: new Date().toISOString() };
+    nbPreview.replaceChildren(el('div', {class:'shelf one'}, coverEl({...nbDraft, topics:[], custom:true}, () => {})));
+    nbStatus.textContent = 'ככה היא תיראה (' + (nbDraft.paper === 'grid' ? 'דפי משבצות' : 'דפי שורות') + '):';
+    nbActions.hidden = false;
+  } catch (e) { nbStatus.textContent = e.message; }
+  nbMake.disabled = false;
+}
+nbMake.addEventListener('click', designCover);
+document.getElementById('nbAgain').addEventListener('click', designCover);
+document.getElementById('nbSave').addEventListener('click', async e => {
+  if (!nbDraft) return;
+  const b = e.currentTarget; b.disabled = true; nbStatus.textContent = 'שומר…';
+  try { DATA = await AI.store.saveNotebook(nbDraft); nbSheet.hidden = true; showNotebook(allNotebooks().find(n => n.id === nbDraft.id)); }
+  catch (err) { nbStatus.textContent = err.message; }
+  b.disabled = false;
+});
+
+/* ===== exams: choose type and pages, Claude writes the questions, grades the open answers ===== */
+const examSheet = document.getElementById('exam'), examBody = document.getElementById('examBody'), examTitle = document.getElementById('examTitle');
+let examState = null;
+const LETTERS = ['א', 'ב', 'ג', 'ד'];
+const MODES = { open: 'מילולי', mc: 'אמריקאי', both: 'גם וגם' };
+const SYMBOLS = ['²', '³', '√', 'π', '±', '·', '÷', '≠', '≤', '≥', '≈', '∞', '°', 'Ω', 'Δ', 'α', 'θ', 'λ', '½', '→', '∑', '∫', 'x̄'];
+
+// every notebook page as plain text, with its page number and topic
+function pageTexts(nb){
+  const out = [];
+  for (const t of topicsOf(nb)) {
+    const box = el('div', {}, topicPages(nb, t));
+    let p = firstPage(nb, t);
+    box.querySelectorAll('article').forEach(a => {
+      a.querySelectorAll('.pg').forEach(x => x.remove());
+      a.querySelectorAll('p,h2,h3,tr,li,.ttl,.formula,.tip,text').forEach(x => x.append('\n'));
+      out.push({ page: p++, topic: t.title, text: a.textContent.replace(/[ \t]+/g, ' ').replace(/\n\s*\n+/g, '\n').trim() });
+    });
+  }
+  return out;
+}
+
+function openExam(nb){
+  if (!AI) return alert('לא נטען. בדקו חיבור לאינטרנט.');
+  if (!topicsOf(nb).length) return alert('אין עדיין נושאים במחברת הזאת. הוסיפו נושא ואז אפשר להיבחן.');
+  examState = { nb };
+  examTitle.textContent = 'מבחן · ' + nb.title;
+  examStepMode();
+  examSheet.hidden = false;
+}
+document.getElementById('examClose').addEventListener('click', () => {
+  if (examState && examState.exam && !examState.graded && !confirm('לצאת מהמבחן? התשובות לא יישמרו.')) return;
+  examSheet.hidden = true; examState = null;
+});
+
+function examStepMode(){
+  const card = (mode, icon, desc) => el('button', {class:'choice', type:'button', onclick:() => { examState.mode = mode; examStepPages(); }}, el('b', {}, icon + ' ' + MODES[mode]), el('span', {}, desc));
+  examBody.replaceChildren(el('div', {class:'sbody'},
+    el('h2', {class:'qhead'}, 'איזה סוג מבחן?'),
+    card('open', '✍️', 'שאלות פתוחות. Claude בודק את התשובות: נכון = ניקוד מלא, קרוב = חצי, לא נכון = 0'),
+    card('mc', '🔘', 'שאלות עם 4 תשובות: א, ב, ג, ד'),
+    card('both', '📋', 'חלק ראשון אמריקאי, חלק שני שאלות פתוחות')));
+}
+
+function examStepPages(){
+  const nb = examState.nb, pages = pageTexts(nb), last = pages.length;
+  const topics = topicsOf(nb).map(t => ({ title: t.title, from: firstPage(nb, t), to: firstPage(nb, t) + pageCount(t) - 1 }));
+  const from = el('input', {type:'number', min:1, max:last, value:1, inputmode:'numeric'});
+  const to = el('input', {type:'number', min:1, max:last, value:last, inputmode:'numeric'});
+  const count = el('input', {type:'number', min:2, max:30, inputmode:'numeric'});
+  const info = el('p', {class:'status'});
+  const checks = topics.map(t => el('input', {type:'checkbox', checked:''}));
+  const sel = () => {
+    const a = Math.max(1, +from.value || 1), b = Math.min(last, +to.value || last);
+    return pages.filter(p => p.page >= a && p.page <= b && checks[topics.findIndex(t => p.page >= t.from && p.page <= t.to)].checked);
+  };
+  const suggest = () => { // about 2 questions per topic, 2 more for every 3 extra pages
+    const per = {}; sel().forEach(p => { per[p.topic] = (per[p.topic] || 0) + 1; });
+    return Math.min(30, Math.max(2, Object.values(per).reduce((s, n) => s + 2 * Math.ceil(n / 3), 0)));
+  };
+  let touched = false;
+  const update = () => {
+    const a = +from.value || 1, b = +to.value || last;
+    topics.forEach((t, i) => { if (!touched) checks[i].checked = t.to >= a && t.from <= b; });
+    if (!count.dataset.manual) count.value = suggest();
+    const s = sel();
+    info.textContent = s.length ? `נבחרו ${s.length} עמודים מתוך ${last}. יורכבו ${Math.min(30, Math.max(2, +count.value || 2))} שאלות.` : 'לא נבחרו עמודים.';
+  };
+  [from, to].forEach(x => x.addEventListener('input', () => { touched = false; update(); }));
+  checks.forEach(c => c.addEventListener('change', () => { touched = true; update(); }));
+  count.addEventListener('input', () => { count.dataset.manual = '1'; update(); });
+  const go = el('button', {class:'btn primary', type:'button', onclick:() => {
+    const s = sel(); if (!s.length) return;
+    examGenerate(s, Math.min(30, Math.max(2, +count.value || 2)));
+  }}, '🚀 התחלת המבחן');
+  examBody.replaceChildren(el('div', {class:'sbody'},
+    el('h2', {class:'qhead'}, 'על מה המבחן? (' + MODES[examState.mode] + ')'),
+    el('div', {class:'tbl ptable'}, el('table', {},
+      el('tr', {}, el('th', {}, ''), el('th', {}, 'נושא'), el('th', {}, 'עמודים')),
+      ...topics.map((t, i) => el('tr', {}, el('td', {}, checks[i]), el('td', {}, t.title), el('td', {}, t.from === t.to ? String(t.from) : t.from + '–' + t.to))))),
+    el('div', {class:'row range'}, el('label', {}, 'מעמוד', from), el('label', {}, 'עד עמוד', to), el('label', {}, 'מספר שאלות', count)),
+    info,
+    el('div', {class:'row'}, go, el('button', {class:'btn', type:'button', onclick:examStepMode}, '→ חזרה'))));
+  update();
+}
+
+async function examGenerate(selPages, count){
+  const nb = examState.nb;
+  const status = el('p', {class:'status'}, '📝 Claude מרכיב את המבחן…');
+  examBody.replaceChildren(el('div', {class:'sbody'}, el('h2', {class:'qhead'}, 'מכין מבחן'), status));
+  const material = selPages.map(p => `--- עמוד ${p.page} | נושא: ${p.topic} ---\n${p.text}`).join('\n\n');
+  try {
+    const exam = await AI.makeExam({ notebookTitle: nb.title, mode: examState.mode, material, count }, n => { status.textContent = '📝 Claude מרכיב את המבחן… (' + n.toLocaleString('he-IL') + ' תווים)'; });
+    if (examState && examState.nb === nb) { examState.exam = exam; examState.topics = [...new Set(selPages.map(p => p.topic))]; renderExam(); }
+  } catch (e) {
+    examBody.replaceChildren(el('div', {class:'sbody'}, el('p', {class:'msg err'}, e.message),
+      el('div', {class:'row'}, el('button', {class:'btn primary', type:'button', onclick:() => examGenerate(selPages, count)}, 'לנסות שוב'), el('button', {class:'btn', type:'button', onclick:examStepPages}, '→ חזרה'))));
+  }
+}
+
+const fmt = n => (Math.round(n * 10) / 10).toLocaleString('he-IL');
+
+function renderExam(){
+  const { nb, exam } = examState;
+  const qs = exam.questions, per = 100 / qs.length;
+  const mcs = qs.filter(q => q.type === 'mc'), opens = qs.filter(q => q.type === 'open');
+  const parts = [mcs.length && 'mc', opens.length && 'open'].filter(Boolean);
+  const ordinal = ['ראשון', 'שני'];
+  examState.answers = qs.map(() => ({ choice: -1, text: '', images: [] }));
+  examState.graded = false;
+  const score = el('span', {class:'blank score'});
+  const paper = el('article', {class:'exam-paper'},
+    el('div', {class:'ehead'}, el('span', {}, 'שם: ', el('span', {class:'blank'}, '')), el('span', {}, 'ציון: ', score)),
+    el('h1', {}, exam.title || ('מבחן ב' + nb.title)),
+    el('p', {class:'intro'}, `לפניכם מבחן ב${nb.title} בן ${parts.length === 2 ? 'שני חלקים' : 'חלק אחד'}, בנושא${examState.topics.length > 1 ? 'ים' : ''}: ${examState.topics.join(', ')}. קראו את ההוראות היטב ותוכלו להתמודד עם כל אתגר וקושי. בהצלחה.`));
+  let num = 0;
+  parts.forEach((part, pi) => {
+    const list = part === 'mc' ? mcs : opens;
+    paper.append(el('h2', {}, '• ', el('u', {}, `חלק ${ordinal[pi]}:`), part === 'mc' ? ' שאלון מרובה תשובות (שאלון אמריקאי)' : ' שאלות פתוחות'),
+      el('p', {class:'instr'}, (part === 'mc' ? 'סמנו בעיגול את התשובה הנכונה. ' : 'ענו על כל השאלות. אפשר לצרף ציור ✏️ או צילום 📷 של פתרון בכתב יד. ')
+        + `כל ${part === 'mc' ? 'תשובה נכונה' : 'שאלה'} ${fmt(per)} נק' (${fmt(per * list.length)} נק' סה"כ).`));
+    list.forEach(q => {
+      const i = qs.indexOf(q), n = ++num, box = el('div', {class:'q', 'data-i': i});
+      box.append(el('p', {class:'qt'}, el('b', {}, n + '. '), q.question, el('span', {class:'mark'})));
+      if (q.type === 'mc') {
+        const ol = el('div', {class:'opts'});
+        q.options.forEach((o, k) => ol.append(el('button', {class:'opt', type:'button', onclick:e => {
+          if (examState.graded) return;
+          examState.answers[i].choice = k;
+          ol.querySelectorAll('.opt').forEach((b, j) => b.classList.toggle('on', j === k));
+        }}, el('span', {class:'let'}, LETTERS[k]), el('span', {}, o))));
+        box.append(ol);
+      } else {
+        const ta = el('textarea', {class:'ans', rows: q.drawing ? 4 : 5, placeholder:'כתבו כאן את התשובה…'});
+        ta.addEventListener('input', () => { examState.answers[i].text = ta.value; });
+        const thumbs = el('div', {class:'thumbs'});
+        const showThumbs = () => thumbs.replaceChildren(...examState.answers[i].images.map((src, k) => el('span', {class:'thumb'}, el('img', {src, alt:'מצורף'}),
+          el('button', {type:'button', 'aria-label':'הסרה', onclick:() => { if (examState.graded) return; examState.answers[i].images.splice(k, 1); showThumbs(); }}, '✕'))));
+        const photo = el('input', {type:'file', accept:'image/*', hidden:''});
+        photo.addEventListener('change', async () => { for (const f of photo.files) examState.answers[i].images.push(await AI.photoToDataUrl(f)); photo.value = ''; showThumbs(); });
+        const symbols = el('div', {class:'syms'},
+          ...SYMBOLS.map(s => el('button', {type:'button', onclick:() => { const a = ta.selectionStart ?? ta.value.length; ta.setRangeText(s, a, ta.selectionEnd ?? a, 'end'); ta.focus(); examState.answers[i].text = ta.value; }}, s)));
+        symbols.hidden = !(nb.paper === 'grid' || q.drawing);
+        const tools = el('div', {class:'tools'},
+          el('button', {type:'button', onclick:() => openDraw(src => { examState.answers[i].images.push(src); showThumbs(); })}, '✏️ ציור / שרטוט'),
+          el('label', {}, '📷 צילום תשובה', photo),
+          el('button', {type:'button', onclick:() => { symbols.hidden = !symbols.hidden; }}, '∑ סימנים'));
+        box.append(ta, symbols, tools, thumbs);
+      }
+      paper.append(box);
+    });
+  });
+  paper.append(el('p', {class:'good'}, 'בהצלחה!'));
+  const submit = el('button', {class:'btn primary big', type:'button', onclick:() => gradeExam(paper, score, submit)}, '📤 הגשת המבחן');
+  examBody.replaceChildren(el('div', {class:'examwrap'}, paper, submit));
+  examBody.scrollTop = 0;
+}
+
+async function gradeExam(paper, scoreEl, submit){
+  const { exam, answers } = examState, qs = exam.questions, per = 100 / qs.length;
+  const unanswered = qs.filter((q, i) => q.type === 'mc' ? answers[i].choice < 0 : !answers[i].text.trim() && !answers[i].images.length).length;
+  if (unanswered && !confirm(`יש ${unanswered} שאלות בלי תשובה. להגיש בכל זאת?`)) return;
+  submit.disabled = true; submit.textContent = '⏳ בודק את המבחן…';
+  const results = qs.map(() => null);
+  qs.forEach((q, i) => { if (q.type === 'mc') results[i] = { verdict: answers[i].choice === q.correct ? 'correct' : 'wrong', feedback: q.answer }; });
+  const open = qs.map((q, i) => ({ q, i })).filter(x => x.q.type === 'open');
+  const toGrade = open.filter(({ i }) => answers[i].text.trim() || answers[i].images.length);
+  open.forEach(({ i }) => { if (!answers[i].text.trim() && !answers[i].images.length) results[i] = { verdict: 'wrong', feedback: 'לא נכתבה תשובה.' }; });
+  if (toGrade.length) {
+    try {
+      const graded = await AI.gradeOpen(toGrade.map(({ q, i }) => ({ number: i + 1, question: q.question, answer: q.answer, studentText: answers[i].text.trim(), images: answers[i].images })),
+        n => { submit.textContent = '⏳ Claude בודק את התשובות… (' + n.toLocaleString('he-IL') + ')'; });
+      graded.forEach(r => { const i = r.number - 1; if (qs[i] && qs[i].type === 'open') results[i] = { verdict: r.verdict, feedback: r.feedback }; });
+    } catch (e) {
+      submit.disabled = false; submit.textContent = '📤 הגשת המבחן';
+      alert(e.message); return;
+    }
+  }
+  examState.graded = true;
+  let total = 0;
+  paper.querySelectorAll('.q').forEach(box => {
+    const i = +box.dataset.i, q = qs[i], r = results[i] || { verdict: 'wrong', feedback: 'לא נבדק.' };
+    const got = r.verdict === 'correct' ? per : r.verdict === 'partial' ? per / 2 : 0;
+    total += got;
+    box.classList.add('done', r.verdict);
+    box.querySelector('.mark').replaceChildren(el('span', {class:'pen'}, (r.verdict === 'correct' ? '✓ ' : r.verdict === 'partial' ? '½ ' : '✗ ') + fmt(got) + '/' + fmt(per)));
+    if (q.type === 'mc') {
+      box.querySelectorAll('.opt').forEach((b, k) => { b.disabled = true; if (k === q.correct) b.classList.add('right'); });
+    } else {
+      box.querySelectorAll('textarea').forEach(t => { t.readOnly = true; });
+      box.querySelectorAll('.tools,.syms').forEach(t => t.remove());
+    }
+    box.append(el('p', {class:'pen fb'}, r.feedback || ''));
+    if (q.type === 'open') box.append(el('details', {class:'model'}, el('summary', {}, 'תשובה לדוגמה'), el('p', {}, q.answer)));
+  });
+  const final = Math.round(total);
+  scoreEl.replaceChildren(el('span', {class:'pen big'}, String(final)));
+  const counts = { correct: 0, partial: 0, wrong: 0 };
+  results.forEach(r => { counts[(r && r.verdict) || 'wrong']++; });
+  const summary = el('div', {class:'summary'},
+    el('div', {class:'grade'}, String(final)),
+    el('p', {}, `✓ ${counts.correct} נכונות · ½ ${counts.partial} חלקיות · ✗ ${counts.wrong} שגויות`),
+    el('div', {class:'row'},
+      el('button', {class:'btn primary', type:'button', onclick:() => { examState = { nb: examState.nb, mode: examState.mode }; examStepPages(); }}, '🔁 מבחן חדש'),
+      el('button', {class:'btn', type:'button', onclick:() => { examSheet.hidden = true; examState = null; }}, 'סגירה')));
+  submit.replaceWith(summary);
+  paper.before(summary.cloneNode(true));
+  paper.previousSibling.querySelectorAll('.row').forEach(r => r.remove());
+  examBody.scrollTop = 0;
+}
+
+/* ===== drawing pad for exam answers (grid background, pens, eraser, undo) ===== */
+const drawSheet = document.getElementById('draw'), canvas = document.getElementById('drawCanvas'), ctx = canvas.getContext('2d');
+let drawDone = null, pen = '#1f2633', erasing = false, undo = [], drawing = false;
+function sizeCanvas(){
+  const r = canvas.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+  canvas.width = Math.round(r.width * dpr); canvas.height = Math.round(r.height * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.lineCap = ctx.lineJoin = 'round';
+}
+function openDraw(done){
+  drawDone = done; undo = []; drawSheet.hidden = false;
+  requestAnimationFrame(() => { sizeCanvas(); ctx.clearRect(0, 0, canvas.width, canvas.height); });
+}
+function pos(e){ const r = canvas.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; }
+canvas.addEventListener('pointerdown', e => {
+  canvas.setPointerCapture(e.pointerId); drawing = true;
+  undo.push(ctx.getImageData(0, 0, canvas.width, canvas.height)); if (undo.length > 30) undo.shift();
+  ctx.globalCompositeOperation = erasing ? 'destination-out' : 'source-over';
+  ctx.strokeStyle = pen; ctx.lineWidth = erasing ? 22 : 3;
+  const [x, y] = pos(e); ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + .1, y + .1); ctx.stroke();
+});
+canvas.addEventListener('pointermove', e => { if (!drawing) return; const [x, y] = pos(e); ctx.lineTo(x, y); ctx.stroke(); });
+['pointerup', 'pointercancel'].forEach(t => canvas.addEventListener(t, () => { drawing = false; }));
+document.querySelectorAll('#draw [data-pen]').forEach(b => b.addEventListener('click', () => {
+  erasing = b.dataset.pen === 'erase'; if (!erasing) pen = b.dataset.pen;
+  document.querySelectorAll('#draw [data-pen]').forEach(x => x.classList.toggle('on', x === b));
+}));
+document.getElementById('drawUndo').addEventListener('click', () => { const s = undo.pop(); if (s) ctx.putImageData(s, 0, 0); });
+document.getElementById('drawClear').addEventListener('click', () => { undo.push(ctx.getImageData(0, 0, canvas.width, canvas.height)); ctx.clearRect(0, 0, canvas.width, canvas.height); });
+document.getElementById('drawCancel').addEventListener('click', () => { drawSheet.hidden = true; });
+document.getElementById('drawSave').addEventListener('click', () => {
+  // flatten onto white squared paper so the grader sees what the student saw
+  const out = document.createElement('canvas'); out.width = canvas.width; out.height = canvas.height;
+  const o = out.getContext('2d'), step = 20 * (window.devicePixelRatio || 1);
+  o.fillStyle = '#fff'; o.fillRect(0, 0, out.width, out.height);
+  o.strokeStyle = '#dde5ef'; o.lineWidth = 1;
+  for (let x = 0; x < out.width; x += step) { o.beginPath(); o.moveTo(x, 0); o.lineTo(x, out.height); o.stroke(); }
+  for (let y = 0; y < out.height; y += step) { o.beginPath(); o.moveTo(0, y); o.lineTo(out.width, y); o.stroke(); }
+  o.drawImage(canvas, 0, 0);
+  const scale = Math.min(1, 1200 / Math.max(out.width, out.height)), small = document.createElement('canvas');
+  small.width = Math.round(out.width * scale); small.height = Math.round(out.height * scale);
+  small.getContext('2d').drawImage(out, 0, 0, small.width, small.height);
+  drawSheet.hidden = true;
+  if (drawDone) drawDone(small.toDataURL('image/jpeg', .85));
+});
+
+/* pull notebooks and topics added on other devices; redraw only if something changed */
 async function syncTopics(){
   if (!AI) return;
   try {
-    const list = await AI.topics.refresh();
-    if (JSON.stringify(list) !== JSON.stringify(CUSTOM)) { CUSTOM = list; if (chat.hidden && sheet.hidden) rerender(); }
+    const data = await AI.store.refresh();
+    if (JSON.stringify(data) !== JSON.stringify(DATA)) { DATA = data; if (!document.querySelector('.sheet:not([hidden])')) rerender(); }
   } catch (e) { /* offline: keep the cached copy */ }
 }
 
 (function start(){
   const h = (location.hash || '').slice(1);
   syncTopics();
-  for (const nb of NOTEBOOKS) {
+  for (const nb of allNotebooks()) {
     if (nb.id === h) return showNotebook(nb);
     const t = topicsOf(nb).find(x => x.id === h);
     if (t) return showTopic(nb, t);

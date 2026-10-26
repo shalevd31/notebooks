@@ -52,9 +52,12 @@ function ghHeaders(accept) {
   return h;
 }
 
+// docs/topics.json holds { version, topics: [...], notebooks: [...] } — topics and notebooks added from the app
+const normalize = d => ({ topics: Array.isArray(d && d.topics) ? d.topics : [], notebooks: Array.isArray(d && d.notebooks) ? d.notebooks : [] });
+
 async function fetchRemote() {
   const res = await fetch(`${API}?ref=${BRANCH}&t=${Date.now()}`, { headers: ghHeaders('application/vnd.github.object+json'), cache: 'no-store' });
-  if (res.status === 404) return { topics: [], sha: null };
+  if (res.status === 404) return { data: normalize(null), sha: null };
   if (!res.ok) throw new Error('GitHub ' + res.status);
   const meta = await res.json();
   let text;
@@ -64,13 +67,12 @@ async function fetchRemote() {
     if (!raw.ok) throw new Error('GitHub ' + raw.status);
     text = await raw.text();
   }
-  const data = JSON.parse(text);
-  return { topics: Array.isArray(data.topics) ? data.topics : [], sha: meta.sha };
+  return { data: normalize(JSON.parse(text)), sha: meta.sha };
 }
 
-async function writeRemote(topics, sha, message) {
+async function writeRemote(data, sha, message) {
   if (!settings.get().githubToken) throw new Error('חסר טוקן של GitHub בהגדרות');
-  const body = { message, branch: BRANCH, content: b64encode(JSON.stringify({ version: 1, topics }, null, 1)) };
+  const body = { message, branch: BRANCH, content: b64encode(JSON.stringify({ version: 2, ...data }, null, 1)) };
   if (sha) body.sha = sha;
   const res = await fetch(API, { method: 'PUT', headers: { ...ghHeaders('application/vnd.github+json'), 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
   if (res.status === 409 || res.status === 422) return false; // someone else wrote first; caller retries on fresh data
@@ -79,25 +81,175 @@ async function writeRemote(topics, sha, message) {
   return true;
 }
 
-export const topics = {
-  cached() { return readLocal(CACHE_KEY, []); },
-  async refresh() { const { topics: list } = await fetchRemote(); writeLocal(CACHE_KEY, list); return list; },
+const upsert = (list, item) => { const i = list.findIndex(x => x.id === item.id); if (i >= 0) list[i] = item; else list.push(item); return list; };
+
+export const store = {
+  cached() { const c = readLocal(CACHE_KEY, null); return normalize(Array.isArray(c) ? { topics: c } : c); },
+  async refresh() { const { data } = await fetchRemote(); writeLocal(CACHE_KEY, data); return data; },
   async update(mutate, message) {
     for (let attempt = 0; attempt < 3; attempt++) {
-      const { topics: list, sha } = await fetchRemote();
-      const next = mutate(list.slice());
+      const { data, sha } = await fetchRemote();
+      const next = mutate({ topics: data.topics.slice(), notebooks: data.notebooks.slice() });
       if (await writeRemote(next, sha, message)) { writeLocal(CACHE_KEY, next); return next; }
     }
     throw new Error('השמירה נכשלה, נסו שוב');
   },
-  save(topic) { return this.update(list => { const i = list.findIndex(t => t.id === topic.id); if (i >= 0) list[i] = topic; else list.push(topic); return list; }, `Topic: ${topic.title}`); },
-  remove(id) { return this.update(list => list.filter(t => t.id !== id), `Remove topic ${id}`); }
+  saveTopic(topic) { return this.update(d => ({ ...d, topics: upsert(d.topics, topic) }), `Topic: ${topic.title}`); },
+  removeTopic(id) { return this.update(d => ({ ...d, topics: d.topics.filter(t => t.id !== id) }), `Remove topic ${id}`); },
+  saveNotebook(nb) { return this.update(d => ({ ...d, notebooks: upsert(d.notebooks, nb) }), `Notebook: ${nb.title}`); },
+  removeNotebook(id) { return this.update(d => ({ topics: d.topics.filter(t => t.notebook !== id), notebooks: d.notebooks.filter(n => n.id !== id) }), `Remove notebook ${id}`); }
 };
 
 /* ===== sanitizing model-written HTML before it goes into the page ===== */
 export function sanitize(html) {
   return DOMPurify.sanitize(html, { USE_PROFILES: { html: true, svg: true, svgFilters: true }, FORBID_TAGS: ['style', 'script', 'iframe', 'form', 'input', 'button'], FORBID_ATTR: ['id'] });
 }
+// SVG drawing fragments (cover doodles): returns only the inner markup of a cleaned <svg>
+export function sanitizeSvg(fragment) {
+  const clean = DOMPurify.sanitize(`<svg xmlns="http://www.w3.org/2000/svg">${fragment || ''}</svg>`, { USE_PROFILES: { svg: true, svgFilters: true }, FORBID_TAGS: ['style', 'script', 'foreignObject', 'image', 'use'], FORBID_ATTR: ['id', 'href', 'xlink:href'] });
+  const m = clean.match(/^<svg[^>]*>([\s\S]*)<\/svg>$/);
+  return m ? m[1] : '';
+}
+
+/* ===== one-shot JSON calls (structured outputs): notebook covers, exams, grading ===== */
+function makeClient() {
+  const key = settings.get().anthropicKey;
+  if (!key) throw new Error('חסר מפתח API של Claude בהגדרות ⚙️');
+  return new Anthropic({ apiKey: key, dangerouslyAllowBrowser: true });
+}
+
+async function jsonCall({ system, content, schema, effort, onProgress }) {
+  const client = makeClient();
+  let message;
+  try {
+    const stream = client.beta.messages.stream({
+      model: MODEL,
+      max_tokens: 32000,
+      betas: ['server-side-fallback-2026-07-01'],
+      fallbacks: 'default',
+      output_config: { effort, format: { type: 'json_schema', schema } },
+      system,
+      messages: [{ role: 'user', content }]
+    });
+    let chars = 0;
+    for await (const ev of stream) {
+      if (ev.type === 'content_block_delta' && ev.delta.type === 'text_delta') { chars += ev.delta.text.length; onProgress && onProgress(chars); }
+    }
+    message = await stream.finalMessage();
+  } catch (e) { throw new Error(describeError(e)); }
+  if (message.stop_reason === 'refusal') throw new Error('Claude לא יכול לעזור עם הבקשה הזאת.');
+  if (message.stop_reason === 'max_tokens') throw new Error('התשובה של Claude נקטעה באמצע. נסו לבחור פחות עמודים.');
+  const text = message.content.filter(b => b.type === 'text').map(b => b.text).join('');
+  try { return JSON.parse(text); } catch { throw new Error('התשובה של Claude לא הגיעה בצורה תקינה. נסו שוב.'); }
+}
+
+const COVER_SCHEMA = {
+  type: 'object', additionalProperties: false,
+  required: ['title', 'fill', 'ring', 'paper', 'top_svg', 'bottom_svg'],
+  properties: {
+    title: { type: 'string', description: 'Notebook title in Hebrew, 1–3 short words' },
+    fill: { type: 'string', description: 'Light pastel hex color for the title letters, e.g. #f7a8c4' },
+    ring: { type: 'string', description: 'Darker saturated hex color of the same hue for outlines and the page-count badge, e.g. #d94f84' },
+    paper: { type: 'string', enum: ['lines', 'grid'], description: 'grid for math/science/technical subjects that need drawing or calculation, lines otherwise' },
+    top_svg: { type: 'string', description: 'SVG elements (no <svg> wrapper) for the top strip, viewBox 0 0 300 110' },
+    bottom_svg: { type: 'string', description: 'SVG elements (no <svg> wrapper) for the bottom strip, viewBox 0 0 300 110' }
+  }
+};
+
+export function designNotebook(subject, examples, onProgress) {
+  const system = `You design covers for hand-decorated Hebrew school notebooks. Each cover is lined paper with a bubble-letter title in the middle and two doodle strips: one above the title and one below it. Each strip is an SVG drawing area of viewBox 0 0 300 110.
+
+Draw 2–4 doodles per strip that clearly say the subject at a glance (e.g. history: scroll, ancient column, hourglass, map, quill; biology: cell, leaf, DNA, microscope). Keep the empty corners free: the app adds decorative corner brackets at the top-right (x 200–300, y 0–90) of the top strip and the bottom-left (x 0–100, y 20–110) of the bottom strip, so place doodles roughly in x 20–200 on the top strip and x 100–290 on the bottom strip.
+
+Style: thick friendly outlines stroke="#2a2a3c" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round", flat bright fills (pinks, yellows, blues, greens, purples), no gradients, no text except a short word or symbol when it really helps (font-family="Rubik, Arial, sans-serif", font-weight 900). Allowed elements: g, path, rect, circle, ellipse, line, polyline, polygon, text. No <svg>, <style>, <image>, ids or scripts.
+
+Here are covers already on the shelf; match their look and density:
+${examples}`;
+  return jsonCall({ system, content: `המקצוע של המחברת החדשה: ${subject}`, schema: COVER_SCHEMA, effort: 'medium', onProgress });
+}
+
+const EXAM_SCHEMA = {
+  type: 'object', additionalProperties: false,
+  required: ['title', 'questions'],
+  properties: {
+    title: { type: 'string', description: 'Exam title in Hebrew, e.g. "מבחן בחשמל בנושא: חוק אוהם ומעגלים טוריים"' },
+    questions: {
+      type: 'array',
+      items: {
+        type: 'object', additionalProperties: false,
+        required: ['type', 'topic', 'page', 'question', 'options', 'correct', 'answer', 'drawing'],
+        properties: {
+          type: { type: 'string', enum: ['mc', 'open'] },
+          topic: { type: 'string', description: 'The notebook topic the question tests' },
+          page: { type: 'integer', description: 'Notebook page the question is based on' },
+          question: { type: 'string' },
+          options: { type: 'array', items: { type: 'string' }, description: 'mc: exactly 4 options, without letters. open: empty array' },
+          correct: { type: 'integer', description: 'mc: index 0–3 of the correct option. open: -1' },
+          answer: { type: 'string', description: 'mc: one-line explanation of why the answer is right. open: the complete model answer a teacher would accept, with key points' },
+          drawing: { type: 'boolean', description: 'true when a good answer needs a drawing, graph, circuit or worked calculation' }
+        }
+      }
+    }
+  }
+};
+
+export async function makeExam({ notebookTitle, mode, material, count }, onProgress) {
+  const kinds = mode === 'mc' ? `all ${count} questions multiple choice (type "mc")`
+    : mode === 'open' ? `all ${count} questions open/written (type "open")`
+    : `${count} questions, about half multiple choice ("mc") and half open ("open"), multiple choice first`;
+  const system = `You are an experienced Israeli high-school teacher writing a real exam in Hebrew for the student's own notebook material.
+
+Rules:
+- Base every question only on the material provided. Cover every topic: about 2 questions per topic (more for long topics), and make the two questions on the same topic test it in completely different ways (e.g. a definition vs. a calculation, a cause vs. a consequence, recognizing vs. applying).
+- Multiple choice: exactly 4 options, one clearly correct, three plausible distractors built from typical mistakes. Vary the position of the correct answer.
+- Open questions: clear, answerable in a few lines (or a short calculation / sketch), like a real exam.
+- Order questions by topic order in the notebook. Write naturally, as on a printed exam, without numbering the questions yourself.`;
+  const content = `מחברת: ${notebookTitle}\nסוג המבחן: ${kinds}.\n\nהחומר (לפי עמודים במחברת):\n\n${material}`;
+  const exam = await jsonCall({ system, content, schema: EXAM_SCHEMA, effort: 'medium', onProgress });
+  exam.questions = (exam.questions || []).filter(q => q.question && (q.type === 'open' || (Array.isArray(q.options) && q.options.length === 4 && q.correct >= 0 && q.correct <= 3))).slice(0, 30);
+  if (!exam.questions.length) throw new Error('לא התקבלו שאלות. נסו שוב.');
+  return exam;
+}
+
+const GRADE_SCHEMA = {
+  type: 'object', additionalProperties: false,
+  required: ['results'],
+  properties: {
+    results: {
+      type: 'array',
+      items: {
+        type: 'object', additionalProperties: false,
+        required: ['number', 'verdict', 'feedback'],
+        properties: {
+          number: { type: 'integer' },
+          verdict: { type: 'string', enum: ['correct', 'partial', 'wrong'] },
+          feedback: { type: 'string', description: 'One or two short sentences in Hebrew to the student: what was right, what was missing or wrong' }
+        }
+      }
+    }
+  }
+};
+
+// items: [{ number, question, answer (model answer), studentText, images: [dataURL] }]
+export async function gradeOpen(items, onProgress) {
+  const system = `You grade open questions on a Hebrew school exam, fairly, like a good teacher.
+
+For each question compare the student's answer (text and/or attached drawings or photos of handwritten work) with the model answer:
+- "correct": the answer is right and covers the key points; wording can differ, small slips that don't change the meaning are fine.
+- "partial": on the right track but missing an important part, or a correct method with a calculation mistake.
+- "wrong": incorrect, irrelevant, or empty.
+Give short, encouraging, specific feedback in Hebrew.`;
+  const content = [];
+  for (const it of items) {
+    content.push({ type: 'text', text: `שאלה ${it.number}: ${it.question}\nתשובת המורה: ${it.answer}\nתשובת התלמיד: ${it.studentText ? it.studentText : '(לא נכתב טקסט)'}${it.images.length ? `\n(מצורפים ${it.images.length} ציורים/צילומים של התלמיד לשאלה ${it.number})` : ''}` });
+    for (const url of it.images) content.push({ type: 'image', source: { type: 'base64', media_type: url.slice(5, url.indexOf(';')), data: url.split(',')[1] } });
+  }
+  const out = await jsonCall({ system, content, schema: GRADE_SCHEMA, effort: 'medium', onProgress });
+  return out.results || [];
+}
+
+// photo -> downscaled JPEG data URL (for exam answers)
+export async function photoToDataUrl(file) { const b = await fileToBlock(file); return `data:${b.source.media_type};base64,${b.source.data}`; }
 
 /* ===== Claude chat ===== */
 const PROPOSE_TOOL = {
@@ -165,11 +317,7 @@ export class ChatSession {
     this.lastRequest = null;
   }
 
-  client() {
-    const key = settings.get().anthropicKey;
-    if (!key) throw new Error('חסר מפתח API של Claude בהגדרות ⚙️');
-    return new Anthropic({ apiKey: key, dangerouslyAllowBrowser: true });
-  }
+  client() { return makeClient(); }
 
   // onEvent({type: 'thinking'|'text'|'writing'|'proposal'|'done'|'error', ...})
   async send(text, files, onEvent) {
