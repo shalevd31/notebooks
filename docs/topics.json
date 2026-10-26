@@ -1,4 +1,13 @@
 {
  "version": 1,
- "topics": []
+ "topics": [
+  {
+   "id": "sync-test",
+   "notebook": "math",
+   "title": "בדיקת סנכרון",
+   "html": "<article class=\"paper\"><p>בדיקה</p></article>",
+   "pageCount": 1,
+   "created": "2026-10-26T01:05:22.810Z"
+  }
+ ]
 }
