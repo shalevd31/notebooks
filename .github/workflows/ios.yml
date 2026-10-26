@@ -6,7 +6,8 @@ name: iPhone app (IPA)
 on:
   push:
     branches: [main]
-    paths: ['docs/**', 'capacitor.config.json', 'build/icon-1024.png', '.github/workflows/ios.yml']
+    # topics added from the app live in docs/topics.json and load at runtime, so they don't need a new IPA
+    paths: ['docs/**', '!docs/topics.json', 'capacitor.config.json', 'build/icon-1024.png', '.github/workflows/ios.yml']
   workflow_dispatch:
 
 permissions:
@@ -34,6 +35,9 @@ jobs:
         run: |
           npx cap add ios --packagemanager SPM
           cp build/icon-1024.png ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png
+          # the chat's 📷 button opens the camera / photo library, which iOS only allows with these texts
+          /usr/libexec/PlistBuddy -c "Add :NSCameraUsageDescription string 'צילום דפי מחברת כדי ש-Claude יסכם אותם'" ios/App/App/Info.plist
+          /usr/libexec/PlistBuddy -c "Add :NSPhotoLibraryUsageDescription string 'בחירת תמונות של דפי מחברת כדי ש-Claude יסכם אותם'" ios/App/App/Info.plist
           npx cap sync ios
 
       - name: Build (unsigned)

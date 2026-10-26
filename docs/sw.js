@@ -1,10 +1,11 @@
 // Offline cache for the phone app. When you change anything in docs/, bump CACHE_VERSION.
-const CACHE_VERSION = 'v2';
+const CACHE_VERSION = 'v3';
 const CACHE = 'notebooks-' + CACHE_VERSION;
 const FILES = [
   './',
   'index.html',
   'manifest.webmanifest',
+  'vendor/nb-ai.js',
   'fonts/fonts.css',
   'fonts/01172959a13d.woff2',
   'fonts/0ae40db16a01.woff2',

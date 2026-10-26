@@ -1,8 +1,15 @@
 // Desktop shell: one window showing docs/index.html (the same app the phone uses).
-const { app, BrowserWindow, shell } = require('electron');
+const { app, BrowserWindow, shell, ipcMain } = require('electron');
 const path = require('path');
+const fs = require('fs');
 
 if (!app.requestSingleInstanceLock()) app.quit();
+
+// %APPDATA%\Notebooks\config.json: { "anthropicKey": "...", "githubToken": "..." }
+ipcMain.on('nb-config', e => {
+  try { e.returnValue = JSON.parse(fs.readFileSync(path.join(app.getPath('userData'), 'config.json'), 'utf8')); }
+  catch { e.returnValue = {}; }
+});
 
 let win;
 function createWindow() {
@@ -16,7 +23,7 @@ function createWindow() {
     backgroundColor: '#e6ebf1',
     autoHideMenuBar: true,
     show: false,
-    webPreferences: { contextIsolation: true, sandbox: true }
+    webPreferences: { contextIsolation: true, sandbox: true, preload: path.join(__dirname, 'preload.js') }
   });
   win.setMenu(null);
   win.loadFile(path.join(__dirname, '..', 'docs', 'index.html'));

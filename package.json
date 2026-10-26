@@ -9,6 +9,8 @@
     "start": "electron .",
     "fonts": "node scripts/fetch-fonts.mjs",
     "icons": "node scripts/make-icons.mjs",
+    "bundle": "esbuild src/nb-ai.js --bundle --format=iife --global-name=NBAI --platform=browser --target=es2020,safari15 --minify --legal-comments=none --outfile=docs/vendor/nb-ai.js",
+    "predist": "npm run bundle",
     "dist": "electron-builder --win nsis"
   },
   "build": {
@@ -39,11 +41,14 @@
     }
   },
   "devDependencies": {
+    "@anthropic-ai/sdk": "^1.3.0",
     "@capacitor/cli": "^8.5.3",
     "@capacitor/core": "^8.5.3",
     "@capacitor/ios": "^8.5.3",
+    "dompurify": "^3.4.17",
     "electron": "^45.0.0",
     "electron-builder": "^26.18.0",
+    "esbuild": "^0.28.2",
     "qrcode": "^1.5.4",
     "sharp": "^0.35.5"
   }

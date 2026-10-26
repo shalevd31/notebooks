@@ -107,6 +107,48 @@ body{margin:0;min-height:100vh;-webkit-tap-highlight-color:transparent}
 .cover.grid{background-image:repeating-linear-gradient(to bottom, transparent 0 17px, #d6dde8 17px 18px),repeating-linear-gradient(to left, transparent 0 17px, #d6dde8 17px 18px)}
 .pages.grid .paper{background-image:linear-gradient(to left, transparent var(--m), var(--margin) var(--m), var(--margin) calc(var(--m) + 2px), transparent calc(var(--m) + 2px)),repeating-linear-gradient(to bottom, transparent 0 15px, var(--rule) 15px 16px),repeating-linear-gradient(to left, transparent 0 15px, var(--rule) 15px 16px)}
 .wrap{padding-top:max(28px, calc(env(safe-area-inset-top, 0px) + 12px));padding-bottom:max(64px, calc(env(safe-area-inset-bottom, 0px) + 24px))}
+
+/* header buttons, "add topic" on the contents page, actions under a topic */
+.hbtns{display:flex;gap:8px;align-items:center}
+.gear{padding:10px 14px}
+.addtopic{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;gap:6px;min-height:32px;line-height:32px;color:var(--pen-pink);font-weight:600}
+.addtopic:hover span{background:var(--hl-p);border-radius:4px}
+.addtopic:focus-visible{outline:3px solid var(--focus)}
+.tactions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;width:100%;max-width:794px}
+.tactions button,.sheet .btn{display:inline-flex;align-items:center;gap:6px;background:var(--desk-2);border:1px solid var(--line);border-radius:999px;padding:10px 18px;cursor:pointer;min-height:44px}
+.tactions button:hover,.sheet .btn:hover{border-color:var(--muted)}
+.sheet .btn.primary{background:var(--pen-pink);border-color:var(--pen-pink);color:#fff}
+.sheet .btn:disabled{opacity:.55;cursor:default}
+
+/* full-screen sheets: chat with Claude, settings */
+.sheet{position:fixed;inset:0;z-index:20;background:var(--desk);color:var(--fg);display:flex;flex-direction:column;padding-top:env(safe-area-inset-top, 0px);padding-bottom:env(safe-area-inset-bottom, 0px)}
+.sheet[hidden]{display:none}
+.shead{display:flex;align-items:center;gap:12px;padding:12px max(16px, env(safe-area-inset-right, 0px)) 12px max(16px, env(safe-area-inset-left, 0px));border-bottom:1px solid var(--line)}
+.shead b{flex:1;font-size:18px}
+.shead button{background:none;border:1px solid var(--line);border-radius:999px;min-width:44px;min-height:44px;cursor:pointer}
+.slog{flex:1;overflow-y:auto;padding:16px max(16px, env(safe-area-inset-right, 0px)) 16px max(16px, env(safe-area-inset-left, 0px));display:flex;flex-direction:column;gap:12px;-webkit-overflow-scrolling:touch}
+.msg{max-width:min(640px, 88%);padding:10px 14px;border-radius:16px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
+.msg.me{align-self:flex-start;background:var(--pen-pink);color:#fff;border-end-start-radius:4px}
+.msg.ai{align-self:flex-end;background:var(--desk-2);border:1px solid var(--line);border-end-end-radius:4px}
+.msg.note{align-self:center;background:none;color:var(--muted);font-size:14px;padding:4px}
+.msg.err{align-self:center;color:#c23b3b;background:none;font-size:15px;text-align:center}
+.msg img{display:block;max-width:180px;max-height:180px;border-radius:8px;margin-bottom:6px}
+.prop{align-self:stretch;display:flex;flex-direction:column;gap:12px;align-items:center;border:2px dashed var(--pen-pink);border-radius:16px;padding:12px}
+.prop .pages{width:100%;gap:16px}
+.prop .ptitle{font-weight:700}
+.sfiles{display:flex;gap:8px;flex-wrap:wrap;padding:0 16px}
+.sfiles span{background:var(--desk-2);border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:14px;cursor:pointer}
+.sform{display:flex;gap:8px;align-items:flex-end;padding:10px max(16px, env(safe-area-inset-right, 0px)) 12px max(16px, env(safe-area-inset-left, 0px));border-top:1px solid var(--line)}
+.sform textarea{flex:1;font:inherit;font-size:16px;resize:none;max-height:40vh;min-height:44px;padding:10px 14px;border-radius:22px;border:1px solid var(--line);background:var(--desk-2);color:var(--fg)}
+.sform .icon{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;border-radius:999px;border:1px solid var(--line);background:var(--desk-2);cursor:pointer;font-size:20px}
+.sform .send{background:var(--pen-pink);border-color:var(--pen-pink);color:#fff}
+.sform .send:disabled{opacity:.5}
+.sbody{flex:1;overflow-y:auto;padding:20px max(16px, env(safe-area-inset-right, 0px)) 24px max(16px, env(safe-area-inset-left, 0px));display:flex;flex-direction:column;gap:14px;max-width:640px;width:100%;box-sizing:border-box;margin-inline:auto}
+.sbody label{display:flex;flex-direction:column;gap:6px;font-weight:500}
+.sbody input,.sbody textarea{font:inherit;font-size:16px;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--desk-2);color:var(--fg);direction:ltr;text-align:left}
+.sbody small{color:var(--muted);font-weight:400}
+.sbody .row{display:flex;gap:10px;flex-wrap:wrap}
+.sbody .status{min-height:1.5em}
 </style>
 </head>
 <body>
@@ -117,10 +159,39 @@ body{margin:0;min-height:100vh;-webkit-tap-highlight-color:transparent}
       <h1 id="hTitle">המחברות שלי</h1>
       <p id="hSub" class="crumbs">בחרו מחברת כדי לפתוח אותה</p>
     </div>
-    <button class="back" id="backBtn" type="button" hidden>→ <span id="backTxt">חזרה</span></button>
+    <div class="hbtns">
+      <button class="back" id="backBtn" type="button" hidden>→ <span id="backTxt">חזרה</span></button>
+      <button class="back gear" id="gearBtn" type="button" aria-label="הגדרות">⚙️</button>
+    </div>
   </header>
   <main id="view"></main>
 </div>
+
+<!-- chat with Claude: writes a new topic (or changes one) and adds it to the notebook -->
+<section class="sheet" id="chat" dir="rtl" lang="he" hidden role="dialog" aria-modal="true" aria-labelledby="chatTitle">
+  <div class="shead"><b id="chatTitle">נושא חדש</b><button type="button" id="chatClose" aria-label="סגירה">✕</button></div>
+  <div class="slog" id="chatLog" aria-live="polite"></div>
+  <div class="sfiles" id="chatFiles"></div>
+  <form class="sform" id="chatForm">
+    <label class="icon" aria-label="צירוף תמונה או PDF">📷<input type="file" id="chatFile" accept="image/*,application/pdf" multiple hidden></label>
+    <textarea id="chatText" rows="1" placeholder="כתבו את החומר או צרפו תמונה…"></textarea>
+    <button class="icon send" id="chatSend" type="submit" aria-label="שליחה">↑</button>
+  </form>
+</section>
+
+<!-- settings: keys stay on this device only -->
+<section class="sheet" id="settings" dir="rtl" lang="he" hidden role="dialog" aria-modal="true" aria-labelledby="setTitle">
+  <div class="shead"><b id="setTitle">הגדרות</b><button type="button" id="setClose" aria-label="סגירה">✕</button></div>
+  <div class="sbody">
+    <label>קוד הגדרה <small>מדביקים כאן את הקוד שקיבלתם, וזה ממלא את שני השדות למטה</small>
+      <textarea id="setCode" rows="3" placeholder="NB1:…"></textarea></label>
+    <div class="row"><button class="btn" type="button" id="setApply">החלת הקוד</button></div>
+    <label>מפתח API של Claude <input id="setKey" type="password" autocomplete="off" placeholder="sk-ant-…"></label>
+    <label>טוקן GitHub (לשמירה ולסנכרון) <input id="setGh" type="password" autocomplete="off" placeholder="github_pat_…"></label>
+    <div class="row"><button class="btn primary" type="button" id="setSave">שמירה</button><button class="btn" type="button" id="setCopy">העתקת קוד הגדרה למכשיר אחר</button></div>
+    <p class="status" id="setStatus"></p>
+  </div>
+</section>
 
 <!-- ============ Topic: שנאי (מחברת המרת אנרגיה) ============ -->
 <template id="t-transformer">
@@ -229,6 +300,7 @@ body{margin:0;min-height:100vh;-webkit-tap-highlight-color:transparent}
 </article>
 </template>
 
+<script src="vendor/nb-ai.js"></script>
 <script>
 document.documentElement.setAttribute("dir","rtl");document.documentElement.setAttribute("lang","he");
 /* ===== כאן מוסיפים מחברות ונושאים ===== */
@@ -346,10 +418,11 @@ function showShelf(){
   setHeader('המחברות שלי');
   hSub.textContent = 'בחרו מחברת כדי לפתוח אותה';
   setBack(null, null); setHash('');
+  rerender = showShelf;
   const shelf = el('div', {class:'shelf'});
   NOTEBOOKS.forEach(nb => {
     const art = ART[nb.art](nb.ring);
-    const n = nb.topics.length;
+    const n = topicsOf(nb).length;
     const b = el('button', {class:'cover' + (nb.paper === 'grid' ? ' grid' : ''), type:'button', style:`--fill:${nb.fill};--ring:${nb.ring}`, 'aria-label':'פתיחת המחברת ' + nb.title, onclick:() => showNotebook(nb)},
       svgFrom(art.top),
       (() => { const s = bubbleSvg(nb.title, nb.fill, nb.ring, {fixedW:300}); s.classList.add('tt'); return s; })(),
@@ -361,41 +434,203 @@ function showShelf(){
   window.scrollTo(0,0);
 }
 
+/* ===== topics added from the app: saved in docs/topics.json on GitHub, cached on the device ===== */
+const AI = window.NBAI || null;
+let CUSTOM = AI ? AI.topics.cached() : [];
+let rerender = () => showShelf();
+function topicsOf(nb){ return nb.topics.concat(CUSTOM.filter(t => t.notebook === nb.id)); }
+function pageCount(t){
+  if (t.html) return t.pageCount || 1;
+  const tpl = document.getElementById('t-' + t.id);
+  return (tpl && tpl.content.querySelectorAll('article').length) || 1;
+}
+function firstPage(nb, t){ let p = 1; for (const x of topicsOf(nb)) { if (x === t) break; p += pageCount(x); } return p; }
+
 function showNotebook(nb){
   setHeader(nb.title);
   hSub.textContent = 'המחברות שלי › ' + nb.title;
   setBack('כל המחברות', showShelf); setHash(nb.id);
+  rerender = () => showNotebook(nb);
+  const all = topicsOf(nb);
   const list = el('ul', {class:'toc'});
-  nb.topics.forEach((t, i) => list.append(el('li', {}, el('button', {type:'button', onclick:() => showTopic(nb, t)},
-    el('span', {class:'name'}, (i+1) + '. ' + t.title), el('span', {class:'dots', 'aria-hidden':'true'}), el('span', {class:'pp'}, 'עמ׳ ' + t.pages)))));
+  all.forEach((t, i) => {
+    const a = firstPage(nb, t), b = a + pageCount(t) - 1;
+    list.append(el('li', {}, el('button', {type:'button', onclick:() => showTopic(nb, t)},
+      el('span', {class:'name'}, (i+1) + '. ' + t.title), el('span', {class:'dots', 'aria-hidden':'true'}), el('span', {class:'pp'}, 'עמ׳ ' + (a === b ? a : a + '–' + b)))));
+  });
   const paper = el('article', {class:'paper'},
     el('div', {class:'ttl'}, bubbleSvg('תוכן עניינים', nb.fill, nb.ring, {oneLine:true, fs:60})),
     el('p', {}, 'מחברת: ', el('span', {class:'y'}, nb.title)),
-    el('p', {}, ' '), nb.topics.length ? list : el('p', {}, 'עדיין אין נושאים במחברת הזאת – הם יופיעו כאן.'));
+    el('p', {}, ' '), all.length ? list : el('p', {}, 'עדיין אין נושאים במחברת הזאת – הם יופיעו כאן.'),
+    el('p', {}, ' '),
+    el('button', {class:'addtopic', type:'button', onclick:() => openChat(nb)}, '＋ ', el('span', {}, 'נושא חדש עם Claude')));
   view.replaceChildren(el('div', {class:'pages' + (nb.paper === 'grid' ? ' grid' : ''), style:`--hl-tan:${nb.fill}`}, paper));
   window.scrollTo(0,0);
+}
+
+function topicPages(nb, t){
+  const frag = document.createDocumentFragment();
+  if (t.html) {
+    const d = document.createElement('div');
+    d.innerHTML = AI ? AI.sanitize(t.html) : '';
+    let p = firstPage(nb, t);
+    d.querySelectorAll('article.paper').forEach(a => { a.querySelectorAll('.pg').forEach(x => x.remove()); a.append(el('span', {class:'pg'}, 'עמוד ' + p++)); });
+    frag.append(...d.childNodes);
+  } else {
+    const tpl = document.getElementById('t-' + t.id);
+    if (tpl) frag.append(tpl.content.cloneNode(true));
+  }
+  return frag;
 }
 
 function showTopic(nb, t){
   setHeader(t.title);
   hSub.textContent = 'המחברות שלי › ' + nb.title + ' › ' + t.title;
   setBack('לתוכן העניינים', () => showNotebook(nb)); setHash(t.id);
-  const tpl = document.getElementById('t-' + t.id);
-  const wrap = el('div', {class:'pages' + (nb.paper === 'grid' ? ' grid' : '')});
-  if (tpl) wrap.append(tpl.content.cloneNode(true));
+  rerender = () => { const fresh = topicsOf(nb).find(x => x.id === t.id); fresh ? showTopic(nb, fresh) : showNotebook(nb); };
+  const wrap = el('div', {class:'pages' + (nb.paper === 'grid' ? ' grid' : '')}, topicPages(nb, t));
+  if (t.html) wrap.append(el('div', {class:'tactions'},
+    el('button', {type:'button', onclick:() => openChat(nb, t)}, '✏️ שינוי עם Claude'),
+    el('button', {type:'button', onclick:() => deleteTopic(nb, t)}, '🗑 מחיקת הנושא')));
   view.replaceChildren(wrap);
   window.scrollTo(0,0);
 }
 
+async function deleteTopic(nb, t){
+  if (!confirm('למחוק את הנושא "' + t.title + '"?')) return;
+  try { CUSTOM = await AI.topics.remove(t.id); showNotebook(nb); }
+  catch (e) { alert(e.message); }
+}
+
+/* ===== chat sheet ===== */
+const chat = document.getElementById('chat'), chatLog = document.getElementById('chatLog'), chatForm = document.getElementById('chatForm');
+const chatText = document.getElementById('chatText'), chatFile = document.getElementById('chatFile'), chatFiles = document.getElementById('chatFiles'), chatSend = document.getElementById('chatSend');
+let session = null, chatNb = null, chatTopic = null, files = [], busy = false;
+
+function logMsg(cls, ...kids){ const m = el('div', {class:'msg ' + cls}, ...kids); chatLog.append(m); chatLog.scrollTop = chatLog.scrollHeight; return m; }
+function showFiles(){ chatFiles.replaceChildren(...files.map((f, i) => el('span', {title:'הסרה', onclick:() => { files.splice(i, 1); showFiles(); }}, '📎 ' + f.name + ' ✕'))); }
+
+function openChat(nb, topic){
+  if (!AI) return alert('הצ׳אט לא נטען. בדקו חיבור לאינטרנט.');
+  chatNb = nb; chatTopic = topic || null; files = []; showFiles();
+  const tpl = document.getElementById('t-transformer');
+  session = new AI.ChatSession({ notebookTitle: nb.title, exampleHtml: tpl ? tpl.innerHTML.trim() : '', existing: topic ? {title: topic.title, html: topic.html} : null });
+  document.getElementById('chatTitle').textContent = topic ? 'שינוי: ' + topic.title : 'נושא חדש · ' + nb.title;
+  chatLog.replaceChildren();
+  logMsg('ai', topic
+    ? 'מה לשנות ב"' + topic.title + '"? אפשר לבקש להוסיף, לקצר, לתקן או להוסיף שרטוט.'
+    : 'היי! על איזה נושא נכין דף ב' + nb.title + '?\nאפשר לכתוב את החומר, להדביק סיכום, או לצלם דפים מהמחברת 📷 ואני אסדר הכול בסגנון המחברת.');
+  if (!AI.settings.get().anthropicKey) logMsg('err', 'קודם צריך להגדיר מפתח API ב⚙️ הגדרות.');
+  chat.hidden = false;
+  chatText.focus();
+}
+document.getElementById('chatClose').addEventListener('click', () => {
+  if (busy && !confirm('Claude עדיין כותב. לסגור בכל זאת?')) return;
+  chat.hidden = true; session = null; rerender();
+});
+chatFile.addEventListener('change', () => { files.push(...chatFile.files); chatFile.value = ''; showFiles(); });
+chatText.addEventListener('input', () => { chatText.style.height = 'auto'; chatText.style.height = chatText.scrollHeight + 'px'; });
+chatText.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey && matchMedia('(pointer:fine)').matches) { e.preventDefault(); chatForm.requestSubmit(); } });
+
+chatForm.addEventListener('submit', async e => {
+  e.preventDefault();
+  if (busy || !session) return;
+  const text = chatText.value, sent = files.slice();
+  if (!text.trim() && !sent.length) return;
+  const me = logMsg('me');
+  for (const f of sent) if (f.type.startsWith('image/')) me.append(el('img', {src: URL.createObjectURL(f), alt: ''})); else me.append('📎 ' + f.name + '\n');
+  me.append(text);
+  chatText.value = ''; chatText.style.height = 'auto'; files = []; showFiles();
+  await converse(s => session.send(text, sent, s));
+});
+
+async function converse(start){
+  busy = true; chatSend.disabled = true;
+  const mySession = session;
+  let bubble = null, status = logMsg('note', 'Claude חושב…');
+  await start(ev => {
+    if (session !== mySession) return; // chat was closed meanwhile
+    if (ev.type === 'text') {
+      if (!bubble) { bubble = logMsg('ai'); chatLog.append(status); }
+      bubble.textContent += ev.text; chatLog.scrollTop = chatLog.scrollHeight;
+    } else if (ev.type === 'writing') {
+      status.textContent = '✍️ כותב את הדפים… (' + ev.chars.toLocaleString('he-IL') + ' תווים)';
+    } else if (ev.type === 'proposal') {
+      showProposal(ev.title, ev.html);
+    } else if (ev.type === 'error') {
+      const m = logMsg('err', ev.message);
+      if (ev.retryable) m.append(' ', el('button', {class:'btn', type:'button', onclick:() => { m.remove(); converse(s => session.retry(s)); }}, 'לנסות שוב'));
+    }
+  });
+  status.remove();
+  busy = false; chatSend.disabled = false;
+}
+
+function showProposal(title, html){
+  const pages = el('div', {class:'pages' + (chatNb.paper === 'grid' ? ' grid' : '')});
+  pages.innerHTML = html;
+  const add = el('button', {class:'btn primary', type:'button'}, chatTopic ? '💾 שמירת השינויים' : '➕ הוספה למחברת');
+  add.addEventListener('click', async () => {
+    add.disabled = true; add.textContent = 'שומר…';
+    const topic = { id: chatTopic ? chatTopic.id : 'u' + Date.now().toString(36), notebook: chatNb.id, title, html,
+      pageCount: Math.max(1, pages.querySelectorAll('article.paper').length), created: chatTopic ? chatTopic.created : new Date().toISOString(), updated: new Date().toISOString() };
+    try {
+      CUSTOM = await AI.topics.save(topic);
+      chat.hidden = true; session = null;
+      showTopic(chatNb, CUSTOM.find(t => t.id === topic.id) || topic);
+    } catch (err) {
+      add.disabled = false; add.textContent = chatTopic ? '💾 שמירת השינויים' : '➕ הוספה למחברת';
+      logMsg('err', err.message);
+    }
+  });
+  const box = el('div', {class:'prop'}, el('div', {class:'ptitle'}, '📒 ' + title), pages, add, el('div', {class:'msg note'}, 'רוצים לשנות משהו? פשוט כתבו לי.'));
+  chatLog.append(box);
+  box.scrollIntoView({block:'start'});
+}
+
+/* ===== settings sheet ===== */
+const sheet = document.getElementById('settings'), setKey = document.getElementById('setKey'), setGh = document.getElementById('setGh'), setStatus = document.getElementById('setStatus'), setCode = document.getElementById('setCode');
+function fillSettings(){ const s = AI ? AI.settings.get() : {}; setKey.value = s.anthropicKey || ''; setGh.value = s.githubToken || ''; setCode.value = ''; }
+document.getElementById('gearBtn').addEventListener('click', () => {
+  if (!AI) return alert('ההגדרות לא נטענו.');
+  fillSettings(); setStatus.textContent = AI.settings.get().anthropicKey && AI.settings.get().githubToken ? '✓ הכול מוגדר' : 'צריך למלא את שני השדות, או להדביק קוד הגדרה.'; sheet.hidden = false;
+});
+document.getElementById('setClose').addEventListener('click', () => { sheet.hidden = true; });
+document.getElementById('setApply').addEventListener('click', () => {
+  try { AI.settings.fromSetupCode(setCode.value); fillSettings(); setStatus.textContent = '✓ הקוד הוחל ונשמר במכשיר הזה'; syncTopics(); }
+  catch (e) { setStatus.textContent = e.message; }
+});
+document.getElementById('setSave').addEventListener('click', () => {
+  AI.settings.set({ anthropicKey: setKey.value.trim(), githubToken: setGh.value.trim() });
+  setStatus.textContent = '✓ נשמר במכשיר הזה'; syncTopics();
+});
+document.getElementById('setCopy').addEventListener('click', async () => {
+  const code = AI.settings.toSetupCode();
+  setCode.value = code; setCode.select();
+  try { await navigator.clipboard.writeText(code); setStatus.textContent = '✓ הועתק. שלחו את הקוד לטלפון והדביקו אותו שם בהגדרות.'; }
+  catch { document.execCommand('copy'); setStatus.textContent = 'סמנו והעתיקו את הקוד מהשדה למעלה.'; }
+});
+
+/* pull topics added on other devices; redraw only if something changed */
+async function syncTopics(){
+  if (!AI) return;
+  try {
+    const list = await AI.topics.refresh();
+    if (JSON.stringify(list) !== JSON.stringify(CUSTOM)) { CUSTOM = list; if (chat.hidden && sheet.hidden) rerender(); }
+  } catch (e) { /* offline: keep the cached copy */ }
+}
+
 (function start(){
   const h = (location.hash || '').slice(1);
+  syncTopics();
   for (const nb of NOTEBOOKS) {
     if (nb.id === h) return showNotebook(nb);
-    const t = nb.topics.find(x => x.id === h);
+    const t = topicsOf(nb).find(x => x.id === h);
     if (t) return showTopic(nb, t);
   }
   showShelf();
 })();
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') syncTopics(); });
 </script>
 <script>
 /* offline support when served from the web (the phone app); the desktop app loads from disk and doesn't need it */
