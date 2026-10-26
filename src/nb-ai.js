@@ -193,14 +193,19 @@ const EXAM_SCHEMA = {
   }
 };
 
+// count: a number the student chose, or null to let Claude size the exam to the material
 export async function makeExam({ notebookTitle, mode, material, count }, onProgress) {
-  const kinds = mode === 'mc' ? `all ${count} questions multiple choice (type "mc")`
-    : mode === 'open' ? `all ${count} questions open/written (type "open")`
-    : `${count} questions, about half multiple choice ("mc") and half open ("open"), multiple choice first`;
+  const n = count ? `exactly ${count} questions` : 'as many questions as the material calls for (see the rules)';
+  const kinds = mode === 'mc' ? `${n}, all multiple choice (type "mc")`
+    : mode === 'open' ? `${n}, all open/written (type "open")`
+    : `${n}, about half multiple choice ("mc") and half open ("open"), multiple choice first`;
   const system = `You are an experienced Israeli high-school teacher writing a real exam in Hebrew for the student's own notebook material.
 
 Rules:
-- Base every question only on the material provided. Cover every topic: about 2 questions per topic (more for long topics), and make the two questions on the same topic test it in completely different ways (e.g. a definition vs. a calculation, a cause vs. a consequence, recognizing vs. applying).
+- Read every page of the material first. List for yourself every distinct thing worth testing: each concept, definition, fact, formula, process step, cause/effect, comparison, table row, diagram and warning. A dense notebook page usually holds 4–8 of these.
+- Write about 2 questions for each of those items, and make the two questions on the same item test it in completely different ways (e.g. a definition vs. a calculation, recognizing vs. applying, a cause vs. a consequence, reading a table vs. using it). Every page and section must be covered; do not skip parts of the material.
+- When the student did not fix the number of questions, the material decides it: typically 8–14 questions for two dense pages, fewer only for very short material, never more than 30. If the material holds more than 30 testable items, choose the most important ones and still spread the questions over all pages.
+- Base every question only on the material provided.
 - Multiple choice: exactly 4 options, one clearly correct, three plausible distractors built from typical mistakes. Vary the position of the correct answer.
 - Open questions: clear, answerable in a few lines (or a short calculation / sketch), like a real exam.
 - Order questions by topic order in the notebook. Write naturally, as on a printed exam, without numbering the questions yourself.`;

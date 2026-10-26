@@ -826,31 +826,29 @@ function examStepPages(){
   const topics = topicsOf(nb).map(t => ({ title: t.title, from: firstPage(nb, t), to: firstPage(nb, t) + pageCount(t) - 1 }));
   const from = el('input', {type:'number', min:1, max:last, value:1, inputmode:'numeric'});
   const to = el('input', {type:'number', min:1, max:last, value:last, inputmode:'numeric'});
-  const count = el('input', {type:'number', min:2, max:30, inputmode:'numeric'});
+  const count = el('input', {type:'number', min:2, max:30, inputmode:'numeric', placeholder:'אוטומטי'});
   const info = el('p', {class:'status'});
   const checks = topics.map(t => el('input', {type:'checkbox', checked:''}));
   const sel = () => {
     const a = Math.max(1, +from.value || 1), b = Math.min(last, +to.value || last);
     return pages.filter(p => p.page >= a && p.page <= b && checks[topics.findIndex(t => p.page >= t.from && p.page <= t.to)].checked);
   };
-  const suggest = () => { // about 2 questions per topic, 2 more for every 3 extra pages
-    const per = {}; sel().forEach(p => { per[p.topic] = (per[p.topic] || 0) + 1; });
-    return Math.min(30, Math.max(2, Object.values(per).reduce((s, n) => s + 2 * Math.ceil(n / 3), 0)));
-  };
+  // empty = Claude reads the pages and sizes the exam to the material (up to 30)
+  const chosen = () => count.value.trim() ? Math.min(30, Math.max(2, Math.round(+count.value) || 2)) : null;
   let touched = false;
   const update = () => {
     const a = +from.value || 1, b = +to.value || last;
     topics.forEach((t, i) => { if (!touched) checks[i].checked = t.to >= a && t.from <= b; });
-    if (!count.dataset.manual) count.value = suggest();
-    const s = sel();
-    info.textContent = s.length ? `נבחרו ${s.length} עמודים מתוך ${last}. יורכבו ${Math.min(30, Math.max(2, +count.value || 2))} שאלות.` : 'לא נבחרו עמודים.';
+    const s = sel(), c = chosen();
+    info.textContent = !s.length ? 'לא נבחרו עמודים.'
+      : `נבחרו ${s.length} עמודים מתוך ${last}. ` + (c ? `יורכבו ${c} שאלות.` : 'Claude יקרא את כל העמודים ויקבע כמה שאלות לפי החומר (עד 30), בערך 2 על כל דבר שנלמד.');
   };
   [from, to].forEach(x => x.addEventListener('input', () => { touched = false; update(); }));
   checks.forEach(c => c.addEventListener('change', () => { touched = true; update(); }));
-  count.addEventListener('input', () => { count.dataset.manual = '1'; update(); });
+  count.addEventListener('input', update);
   const go = el('button', {class:'btn primary', type:'button', onclick:() => {
     const s = sel(); if (!s.length) return;
-    examGenerate(s, Math.min(30, Math.max(2, +count.value || 2)));
+    examGenerate(s, chosen());
   }}, '🚀 התחלת המבחן');
   examBody.replaceChildren(el('div', {class:'sbody'},
     el('h2', {class:'qhead'}, 'על מה המבחן? (' + MODES[examState.mode] + ')'),
