@@ -1,5 +1,5 @@
 {
- "version": 1,
+ "version": 2,
  "topics": [
   {
    "id": "umvp36tph",
@@ -27,6 +27,18 @@
    "pageCount": 6,
    "created": "2026-10-26T12:47:59.749Z",
    "updated": "2026-10-26T12:47:59.749Z"
+  }
+ ],
+ "notebooks": [
+  {
+   "id": "nmvraza2z",
+   "title": "לשון של רומי",
+   "fill": "#c9a8f7",
+   "ring": "#7b4fd9",
+   "paper": "lines",
+   "top": "<g transform=\"translate(64 60)\"><path d=\"M-50 -20V32C-34 26 -14 26 0 34C14 26 34 26 50 32V-20Z\" fill=\"#f27ba7\" stroke=\"#2a2a3c\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><path d=\"M0 -22C-14 -30 -34 -30 -46 -24V26C-34 20 -14 20 0 28Z\" fill=\"#fff\" stroke=\"#2a2a3c\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><path d=\"M0 -22C14 -30 34 -30 46 -24V26C34 20 14 20 0 28Z\" fill=\"#fff\" stroke=\"#2a2a3c\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><path d=\"M10 -4H36M10 6H36M10 16H30M-36 10H-10M-36 18H-14\" stroke=\"#2a2a3c\" stroke-width=\"1.8\" stroke-linecap=\"round\"/><text x=\"-23\" y=\"2\" text-anchor=\"middle\" font-size=\"20\" font-weight=\"900\" fill=\"#7b4fd9\" font-family=\"Rubik, Arial, sans-serif\">אב</text></g><g transform=\"translate(144 40)\"><polygon points=\"-12,14 -22,32 2,18\" fill=\"#ffd25a\" stroke=\"#2a2a3c\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><ellipse rx=\"32\" ry=\"22\" fill=\"#ffd25a\" stroke=\"#2a2a3c\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><text y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"900\" fill=\"#2a2a3c\" font-family=\"Rubik, Arial, sans-serif\">שָׁלוֹם</text></g><g transform=\"translate(170 80) rotate(-35)\"><rect x=\"-30\" y=\"-7\" width=\"48\" height=\"14\" fill=\"#33c4a8\" stroke=\"#2a2a3c\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><polygon points=\"18,-7 30,0 18,7\" fill=\"#ffe0b0\" stroke=\"#2a2a3c\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><polygon points=\"26,-2 30,0 26,2\" fill=\"#2a2a3c\"/><rect x=\"-38\" y=\"-7\" width=\"8\" height=\"14\" rx=\"2\" fill=\"#f27ba7\" stroke=\"#2a2a3c\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/></g>",
+   "bot": "<g transform=\"translate(132 58) rotate(-8)\"><rect x=\"-18\" y=\"-18\" width=\"36\" height=\"36\" rx=\"5\" fill=\"#7fd06a\" stroke=\"#2a2a3c\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><text y=\"9\" text-anchor=\"middle\" font-size=\"26\" font-weight=\"900\" fill=\"#2a2a3c\" font-family=\"Rubik, Arial, sans-serif\">ל</text></g><g transform=\"translate(176 70) rotate(7)\"><rect x=\"-18\" y=\"-18\" width=\"36\" height=\"36\" rx=\"5\" fill=\"#f27ba7\" stroke=\"#2a2a3c\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><text y=\"9\" text-anchor=\"middle\" font-size=\"26\" font-weight=\"900\" fill=\"#2a2a3c\" font-family=\"Rubik, Arial, sans-serif\">ש</text></g><g fill=\"#2a2a3c\"><circle cx=\"124\" cy=\"88\" r=\"3\"/><circle cx=\"136\" cy=\"88\" r=\"3\"/><circle cx=\"130\" cy=\"97\" r=\"3\"/></g><g transform=\"translate(234 56) rotate(6)\"><rect x=\"-24\" y=\"-32\" width=\"48\" height=\"64\" rx=\"3\" fill=\"#3a7bd5\" stroke=\"#2a2a3c\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><rect x=\"16\" y=\"-32\" width=\"8\" height=\"64\" fill=\"#ffd25a\" stroke=\"#2a2a3c\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><text x=\"-4\" y=\"4\" text-anchor=\"middle\" font-size=\"12\" font-weight=\"900\" fill=\"#fff\" font-family=\"Rubik, Arial, sans-serif\">מילון</text></g><text x=\"280\" y=\"58\" text-anchor=\"middle\" font-size=\"34\" font-weight=\"900\" fill=\"#ffd25a\" stroke=\"#2a2a3c\" stroke-width=\"2\" font-family=\"Rubik, Arial, sans-serif\">?</text><text x=\"200\" y=\"30\" text-anchor=\"middle\" font-size=\"30\" font-weight=\"900\" fill=\"#b38be8\" stroke=\"#2a2a3c\" stroke-width=\"2\" font-family=\"Rubik, Arial, sans-serif\">!</text>",
+   "created": "2026-10-27T23:14:51.467Z"
   }
  ]
 }
